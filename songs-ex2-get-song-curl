@@ -1,0 +1,30 @@
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+songs = [
+    {
+        "id": 1,
+        "title": "Imagine",
+        "artist": "John Lennon"
+    },
+    {
+        "id": 2,
+        "title": "Bohemian Rhapsody",
+        "artist": "Queen"
+    }
+]
+
+@app.route("/songs/<int:song_id>", methods=["GET"])
+def get_song(song_id):
+    song = next((s for s in songs if s["id"] == song_id), None)
+
+    if song:
+        return jsonify(song), 200
+
+    return jsonify({
+        "message": "Song not found"
+    }), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
